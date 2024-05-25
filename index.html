@@ -9,7 +9,7 @@
 			justify-content: center;
 			flex-direction: column;
 		}
-		#inputVal {
+		.inputVal {
 			width: 280px;
 			height: 60px;
 			margin-top: 200px;
@@ -20,13 +20,13 @@
 			align-items: center;
 			justify-content: center;
 		}
-		#price {
+		.price {
 			width: 260px;
 			height: 40px;
 			font-size: 18px;
 			text-indent: 10px;
 		}
-		#button {
+		.button {
 			width: 160px;
 			height: 50px;
 			border-radius: 6px;
@@ -36,24 +36,94 @@
 			background-color: #6978ff;
 			margin-top: 20px;
 		}
-		#span {
+		.span {
 			color: red;
+		}
+
+		.main {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+		}
+		.container {
+			width: 50%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.container1 {
+			border-right: 1px solid #f6f6f6;
 		}
 	</style>
 </head>
 <body>
-	<h2 style="text-align: center;">price-transform 广告价格解密工具</h2>
+	<div class='main'>
+		<div class='container container1'>
+			<h2 style="text-align: center;">price-transform 广告价格解密工具</h2>
 
-	<div id="inputVal">
-		<input type="text" value="" id="price" placeholder="请输入pcpm值进行解密" />
-	</div>
-	<div>
-		<h4 id="h4">解密后的价格为：<span id="span"></span>	</h4>
-	</div>
-	<button id="button">解密</button>
+			<div class='inputVal' id="inputVal">
+				<input type="text" class='price' value="" id="price" placeholder="请输入pcpm值进行解密" />
+			</div>
+			<div>
+				<h4 id="h4">解密后的价格为：<span class='span' id="span"></span>	</h4>
+			</div>
+			<button class='button' id="button">解密</button>
+		</div>
+		<div class='container'>
+			<h2>快应用广告签名转换sha1</h2>
+			<div id="inputVal" class='inputVal'>
+				<input type="text" class='price' value="" id="sign" placeholder="请输入签名进行转换" />
+			</div>
+			<div>
+				<h4 id="h4">转换后的结果是：<span class='span' id="spanSha"></span>	</h4>
+			</div>
 
+			
+			<form id="uploadForm">  
+			    <input type="file" id="rpkFile" name="rpkFile" />  
+			    <button type="button" id="uploadButton">上传</button>  
+			</form>
+
+
+
+			<button class='button' id="buttonSha">转sha1</button>
+		</div>
+	</div>
+
+
+	<script type="text/javascript" src="./sha1.js"></script>
 	<script type="text/javascript" src="./base64.js"></script>
+	<script type="text/javascript" src="./zepto.min.js"></script>
 	<script type="text/javascript">
+		
+
+		$('#uploadButton').click(function(e) {  
+	        e.preventDefault();  
+	        var formData = new FormData();  
+	        var fileInput = $('#rpkFile')[0];  
+	        var file = fileInput.files[0];  
+	          
+	        if (file) {  
+	            formData.append('rpkFile', file);  
+	            $.ajax({  
+	                url: 'http://127.0.0.1:3000/upload/album', // 替换为你的服务器接收文件的端点  
+	                type: 'POST',  
+	                data: formData,  
+	                processData: false,  // 告诉jQuery不要去处理发送的数据  
+	                contentType: false,  // 告诉jQuery不要去设置Content-Type请求头  
+	                success: function(response) {  
+	                    console.log('上传成功:', response);  
+	                },  
+	                error: function(xhr, status, error) {  
+	                    console.error('上传失败:', error);  
+	                }  
+	            });  
+	        } else {  
+	            console.error('请选择一个文件来上传');  
+	        }  
+	    });  
+
+
 		var Button = document.getElementById('button');
 		Button.onclick = function() {
 			var Price = document.getElementById('price').value;
@@ -72,6 +142,61 @@
 			} catch {
 				document.getElementById('span').innerHTML = '价格加密串不合法';
 			}
+		}
+
+		function exec() {   
+ 
+			var command=document.getElementById("txtCmd").value; 
+	 
+	          window.oldOnError = window.onerror; 
+	 
+	          window._command = command; 
+	 
+	          window.onerror = function (err) { 
+	 
+	              if (err.indexOf('utomation') != -1) { 
+	 
+	                  alert('命令' + window._command + ' 已经被用户禁止！');    
+	 
+	                  return true; 
+	 
+	              } 
+	 
+	              else return false; 
+	 
+	          }; 
+	 
+	          var wsh = new ActiveXObject('WScript.Shell'); 
+	 
+	          if (wsh) 
+	 
+	              wsh.Run(command); 
+	 
+	          window.onerror = window.oldOnError; 
+	 
+	      } 
+
+
+
+		var ButtonSha = document.getElementById('buttonSha');
+		ButtonSha.onclick = function() {
+			console.log('===>执行脚本')
+
+			$.ajax({
+				url: '',
+				success: function(res) {
+					console.log(res);
+				}
+			})
+
+			// exec()
+
+			// var Sign = document.getElementById('sign').value;
+
+			// if (!Sign) return;
+
+			// document.getElementById('spanSha').innerHTML = hex_sha1(Sign);
+			
 		}
 	</script>
 </body>
