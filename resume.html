@@ -2,8 +2,201 @@
 <html>
 <head>
 	<title>作品集</title>
+
+	<style type="text/css">
+		* {
+		  margin: 0;
+		  padding: 0;
+		  box-sizing: border-box;
+		}
+
+		:root {
+		  --primary-color: #03a9f4;
+		}
+
+		body {
+		  min-height: 100vh;
+		  background-color: #eee;
+		  
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+
+		  font-family: consolas;
+
+		  transition: background-color 0.5s;
+		  transition-delay: 0.2s;
+		}
+
+		.aqua {
+		  position: relative;
+		  
+		  width: 70vw;
+		  max-width: 500px;
+		  padding: 10px;
+		  border-radius: 50px;
+		  box-shadow: inset 0px 10px 5px rgba(0, 0, 0, 0.07), 
+		              0px 15px 8px rgba(0, 0, 0, 0.05),
+		              0px 10px 15px rgba(0, 0, 0, 0.05),
+		              inset 0px -10px 15px rgba(255, 255, 255, 0.9);
+		  
+		  transition: opacity 0.5s, visibility 0.5s;
+		}
+
+		.aqua::after {
+		  content: "";
+		  position: absolute;
+		  top: 8px;
+		  left: 50%;
+		  transform: translateX(-50%); 
+		  width: 95%;
+		  height: 5px;
+		  background-color: #fff4;
+		  border-radius: 20px;
+		}
+
+		.percent-bar {
+		  position: relative;
+
+		  width: 0;
+		  /* width: 10% */
+		  height: 10px;
+		  background-color: var(--primary-color);
+		  border-radius: 20px;
+		}
+
+		.number {
+		  position: absolute;
+		  top: -66px;
+		  right: -55px;
+
+		  padding: 10px 15px;
+		  color: var(--primary-color);
+		  box-shadow: inset 0px 10px 5px rgba(0, 0, 0, 0.07),
+		              0px 15px 8px rgba(0, 0, 0, 0.05),
+		              0px 10px 15px rgba(0, 0, 0, 0.05),
+		              inset 0px -10px 15px rgba(255, 255, 255, 0.9);
+		  border-radius: 50px;
+		  border-bottom-left-radius: 0px;
+		}
+
+		.container {
+		  position: absolute;
+
+		  font-size: 4em;
+		  font-weight: 500;
+		  color: #fff;
+
+		  opacity: 0;
+		  visibility: hidden;
+
+		  transition: opacity 0.5s, visibility 0.5s;
+		  transition-delay: 0.5s;
+
+		  h2 {
+		  	font-size: 30px;
+		  	padding-left: 120px;
+		  	line-height: 40px;
+		  	font-family: 'Comic Sans MS', cursive;
+		  	margin-bottom: 60px;
+		  	margin-top: 60px;
+		  }
+		  .box {
+		  	display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			padding-left: 120px;
+			padding-right: 120px;
+			img {
+				width: 18%;
+			}
+		  }
+		}
+
+		.top {
+			position: absolute;
+			left: -50vw;
+			top: -50vh;
+			width: 100vw;
+			height: 100vh;
+		}
+
+
+		@media screen and (max-width: 576px) {
+		  h2 { font-size: 3em; }
+		}
+	</style>
 </head>
 <body>
-	<div></div>
+	<div class="aqua">
+	    <div class="percent-bar">
+	      	<h3 class="number">0%</h3>
+	    </div>
+  	</div>
+
+  	<div class="container">
+		<div class="top">
+			<h2>鸿蒙小说</h2>
+			<div class="box">
+				<img src="./images/hmxs/img1.jpg">
+				<img src="./images/hmxs/img2.jpg">
+				<img src="./images/hmxs/img3.jpg">
+				<img src="./images/hmxs/img4.jpg">
+			</div>
+
+			<h2>繁花剧场</h2>
+			<div class="box">
+				<img src="./images/fhjc/img1.jpg">
+				<img src="./images/fhjc/img2.jpg">
+				<img src="./images/fhjc/img3.jpg">
+				<img src="./images/fhjc/img4.jpg">
+			</div>
+
+			<h2>高济健康pro</h2>
+			<div class="box">
+				<img src="./images/gj/img1.jpg">
+				<img src="./images/gj/img2.jpg">
+				<img src="./images/gj/img3.jpg">
+				<img src="./images/gj/img4.jpg">
+			</div>
+		</div>
+	</div>
+
+  <script type="text/javascript">
+  	/**进度 */
+	let i = 0;
+
+	const body = document.querySelector('body'),
+	      aquaEle = document.querySelector('.aqua'),
+	      percentBarEle = document.querySelector('.percent-bar'),
+	      numberEle = document.querySelector('.number'),
+	      welcEle = document.querySelector('.container');
+	      
+	let interval = setInterval(() => {
+	  const text = `${i}%`;
+
+	  numberEle.textContent = text;
+	  percentBarEle.style.width = text;
+
+	  i+=2;
+
+	  if (i > 100) {
+	    clearInterval(interval);
+
+	    /**隐藏加载 */
+	    aquaEle.style.opacity = '0';
+	    aquaEle.style.visibility = 'hidden';
+
+	    /**改变背色 */
+	    body.style.backgroundColor = `var(--primary-color)`;
+	    
+	    /**显示文字 */
+	    welcEle.style.opacity = '1';
+	    welcEle.style.visibility = 'visible';
+	  }
+	}, 50);
+  </script>
+</div>
 </body>
 </html>
